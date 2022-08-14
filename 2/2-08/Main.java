@@ -12,11 +12,24 @@ public class Main {
 
         Arrays.sort(comparableScores);
 
+        int ranking = 0;
+        int previousScore = -1;
+        int[] answer = new int[count];
+        int sameScoreCount = 1;
+
         for (Score s : comparableScores) {
-            System.out.println(s.getScore());
+            if (s.getScore() == previousScore) {
+                sameScoreCount++;
+            } else {
+                ranking += sameScoreCount;
+                sameScoreCount = 1;
+            }
+
+            answer[s.getIndex()] = ranking;
+            previousScore = s.getScore();
         }
 
-        return null;
+        return answer;
     }
 
     public static void main(String[] args) {
@@ -28,7 +41,9 @@ public class Main {
             scores[i] = in.nextInt();
         }
 
-        System.out.println(solution(count, scores));
+        for (int i : solution(count, scores)) {
+            System.out.print(i + " ");
+        }
     }
 }
 
@@ -49,11 +64,12 @@ class Score implements Comparable<Score> {
         return score;
     }
 
+    // 내림차순 정렬
     public int compareTo(Score other) {
         if (score > other.getScore()) {
-            return 1;
+            return -1;
         }
 
-        return -1;
+        return 1;
     }
 }
